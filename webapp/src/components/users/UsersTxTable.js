@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle, DialogContent, TextField } from '@material-ui/core'
 import { transactions } from '../../../mocks/transactions-data'
 import { users } from '../../../mocks/user-data'
-import { Button } from 'react-bootstrap'
+import Button from '@material-ui/core/Button'
 
 export class UsersTxTable extends React.Component {
   constructor (props) {
@@ -22,7 +22,11 @@ export class UsersTxTable extends React.Component {
       modalOpen: false,
       rowData: {},
       users: users,
-      trueFalse: ['true', 'false']
+      trueFalse: ['true', 'false'],
+      createUserModalOpen: false,
+      firstName: '',
+      lastName: '',
+      dob: ''
     }
   }
 
@@ -60,6 +64,7 @@ export class UsersTxTable extends React.Component {
 
   handleClose () {
     this.setState({ modalOpen: false })
+    this.setState({ createUserModalOpen: false })
   }
 
   handleEdit () {
@@ -93,6 +98,18 @@ export class UsersTxTable extends React.Component {
     this.setState({ rowData: { ...this.state.rowData, dob: val } })
   }
 
+  handleNewFirstNameChange (val) {
+    this.setState({ firstName: val })
+  }
+
+  handleNewLastNameChange (val) {
+    this.setState({ lastName: val })
+  }
+
+  handleNewDOBChange (val) {
+    this.setState({ dob: val })
+  }
+
   convertDate (userDate) {
     const blah = new Date(userDate)
     const year = blah.getFullYear()
@@ -102,9 +119,37 @@ export class UsersTxTable extends React.Component {
     this.setState({ rowData: { ...this.state.rowData, dob: date } })
   }
 
+  createUser () {
+    // user.insert!(first_name: this.state.firstName, last_name: this.state.lastName, dob: this.state.dob)
+    const newId = this.state.users.length + 2
+    const newUser = {
+      first_name: this.state.firstName,
+      last_name: this.state.lastName,
+      id: newId,
+      dob: this.state.dob
+    }
+    this.setState({ users: [newUser, ...this.state.users] })
+    this.setState({ createUserModalOpen: false })
+    this.setState({ firstName: '' })
+    this.setState({ lastName: '' })
+    this.setState({ dob: '' })
+  }
+
+  openCreateuserModal () {
+    this.setState({ createUserModalOpen: true })
+  }
+
   render () {
     return (
       <div>
+        <Button
+          color='primary'
+          onClick={() => this.openCreateuserModal()}
+          style={{ marginLeft: '90%', marginTop: '20px', marginBottom: '20px', backgroundColor: '#53a738' }}
+          variant='contained'
+        >
+          Create User
+        </Button>
         <MaterialTable
           actions={[
             {
@@ -146,7 +191,7 @@ export class UsersTxTable extends React.Component {
             pageSize: 10,
             search: false
           }}
-          title='All Vendors'
+          title='All Users'
         />
         <Dialog
           onClose={() => this.handleClose()}
@@ -154,7 +199,7 @@ export class UsersTxTable extends React.Component {
           style={{ maxheight: '500px !important', width: '180px !importtant' }}
         >
           <DialogTitle>
-            Edit Vendor
+            Edit User
           </DialogTitle>
           <DialogContent>
             <form>
@@ -194,6 +239,59 @@ export class UsersTxTable extends React.Component {
               </Button>{' '}
               <Button
                 onClick={() => this.handleEdit()}
+                style={{ height: '30px', width: '100px', backgroundColor: '#28a745', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#28a745', borderWidth: '0' }}
+              >
+                Submit
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          onClose={() => this.handleClose()}
+          open={this.state.createUserModalOpen}
+          style={{ maxheight: '500px !important', width: '180px !importtant' }}
+        >
+          <DialogTitle>
+            Create a User
+          </DialogTitle>
+          <DialogContent>
+            <form>
+              <TextField
+                id='outlined-basic-first-name'
+                label='First Name'
+                onChange={(event) => this.handleNewFirstNameChange(event.target.value)}
+                style={{ paddingTop: '10px', paddingBottom: '20px', width: '200px' }}
+                value={this.state.firstName}
+              />
+              <TextField
+                id='outlined-basic-last-name'
+                label='Last Name'
+                onChange={(event) => this.handleNewLastNameChange(event.target.value)}
+                style={{ paddingTop: '10px', paddingBottom: '20px', width: '200px', marginLeft: '50px' }}
+                value={this.state.lastName}
+              />
+              <TextField
+                InputLabelProps={{
+                  shrink: true
+                }}
+                defaultValue={this.state.dob}
+                format='MM/DD/YYY'
+                id='datetime-dob'
+                label='Birth Date'
+                onChange={(event) => this.handleNewDOBChange(event.target.value)}
+                style={{ paddingTop: '10px', paddingBottom: '20px', width: '200px' }}
+                type='date'
+              />
+            </form>
+            <div style={{ float: 'right' }}>
+              <Button
+                onClick={() => this.handleClose()}
+                style={{ height: '30px', width: '100px', backgroundColor: '#6c757d', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#6c757d', borderWidth: '0' }}
+              >
+                Cancel
+              </Button>{' '}
+              <Button
+                onClick={() => this.createUser()}
                 style={{ height: '30px', width: '100px', backgroundColor: '#28a745', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#28a745', borderWidth: '0' }}
               >
                 Submit

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import AppRouter from './routes'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './network/apollo-client'
+import './i18n'
 
 ReactDOM.render(
   (

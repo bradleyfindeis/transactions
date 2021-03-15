@@ -20,7 +20,7 @@ const getUserId = () => {
 }
 const getUserName = () => {
   const user = users[Math.floor(Math.random() * users.length)]
-  return user.name
+  return `${user.first_name} ${user.last_name}`
 }
 const randomDate = (start, end) => {
   let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString()

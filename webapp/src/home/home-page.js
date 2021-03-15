@@ -10,6 +10,18 @@ import { transactions } from '../../mocks/transactions-data'
 import { chartData } from '../../mocks/chart-data'
 import { pieData } from '../../mocks/pie-data'
 
+function Text () {
+  const { t } = useTranslation()
+  return (
+    <div>
+      <h1>{t('Welcome To React')}</h1>
+      {/* <h4>{t('translation.sub')}</h4>
+      <button onClick={() => i18n.changeLanguage('gibb')}>Check It Out</button>
+      <button onClick={() => i18n.changeLanguage('en')}>Lets Change Back</button> */}
+    </div>
+  )
+}
+
 export function Home () {
   return (
     <div
@@ -20,6 +32,15 @@ export function Home () {
         spacing={4}
         style={{ marginTop: '2%' }}
       >
+        <Grid
+          item
+          lg={12}
+          xs={10}
+        >
+          <Paper>
+            <Text />
+          </Paper>
+        </Grid>
         <Grid
           item
           lg={12}

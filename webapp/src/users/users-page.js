@@ -13,9 +13,6 @@ export class Users extends React.Component {
     }
   }
 
-  componentDidMount () {
-  }
-
   useStyles () {
     makeStyles((theme) => ({
       root: {

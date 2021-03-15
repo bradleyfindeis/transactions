@@ -45,11 +45,12 @@ function AppRouter () {
               edge='start'
               fontSize='large'
               onClick={event => (window.location.href = '/')}
+              style={{ cursor: 'pointer' }}
             />
             <Typography
               className={useStyles.title}
               onClick={event => (window.location.href = '/vendors')}
-              style={{ marginLeft: '5%' }}
+              style={{ marginLeft: '5%', cursor: 'pointer' }}
               variant='h6'
             >
               Vendors
@@ -57,7 +58,7 @@ function AppRouter () {
             <Typography
               className={useStyles.title}
               onClick={event => (window.location.href = '/users')}
-              style={{ marginLeft: '2%' }}
+              style={{ marginLeft: '2%', cursor: 'pointer' }}
               variant='h6'
             >
               Users

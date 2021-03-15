@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle, DialogContent, TextField } from '@material-ui/core'
 import { transactions } from '../../../mocks/transactions-data'
 import { merchants } from '../../../mocks/vendor-data'
-import { Button } from 'react-bootstrap'
+import Button from '@material-ui/core/Button'
 
 export class VendorTxTable extends React.Component {
   constructor (props) {
@@ -21,7 +21,10 @@ export class VendorTxTable extends React.Component {
       modalOpen: false,
       rowData: {},
       vendors: merchants,
-      trueFalse: ['true', 'false']
+      trueFalse: ['true', 'false'],
+      createVendorModalOpen: false,
+      name: '',
+      description: ''
     }
   }
 
@@ -59,6 +62,7 @@ export class VendorTxTable extends React.Component {
 
   handleClose () {
     this.setState({ modalOpen: false })
+    this.setState({ createVendorModalOpen: false })
   }
 
   handleEdit () {
@@ -89,9 +93,42 @@ export class VendorTxTable extends React.Component {
     this.setState({ rowData: { ...this.state.rowData, description: val } })
   }
 
+  handleNewNameChange (val) {
+    this.setState({ name: val })
+  }
+
+  handleNewDescriptionChange (val) {
+    this.setState({ description: val })
+  }
+
+  openCreateVendorModal () {
+    this.setState({ createVendorModalOpen: true })
+  }
+
+  createVendor () {
+    const newId = this.state.vendors.length + 2
+    const newVendor = {
+      name: this.state.name,
+      description: this.state.description,
+      id: newId
+    }
+    this.setState({ vendors: [newVendor, ...this.state.vendors] })
+    this.setState({ createVendorModalOpen: false })
+    this.setState({ name: '' })
+    this.setState({ description: '' })
+  }
+
   render () {
     return (
       <div>
+        <Button
+          color='primary'
+          onClick={() => this.openCreateVendorModal()}
+          style={{ marginLeft: '90%', marginTop: '20px', marginBottom: '20px', backgroundColor: '#53a738' }}
+          variant='contained'
+        >
+          Create Vendor
+        </Button>
         <MaterialTable
           actions={[
             {
@@ -180,6 +217,47 @@ export class VendorTxTable extends React.Component {
               </Button>{' '}
               <Button
                 onClick={() => this.handleEdit()}
+                style={{ height: '30px', width: '100px', backgroundColor: '#28a745', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#28a745', borderWidth: '0' }}
+              >
+                Submit
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          onClose={() => this.handleClose()}
+          open={this.state.createVendorModalOpen}
+          style={{ maxheight: '500px !important', width: '180px !importtant' }}
+        >
+          <DialogTitle>
+            Create a Vendor
+          </DialogTitle>
+          <DialogContent>
+            <form>
+              <TextField
+                id='outlined-basic-name'
+                label='Vendor Name'
+                onChange={(event) => this.handleNewNameChange(event.target.value)}
+                style={{ paddingTop: '10px', paddingBottom: '20px', width: '200px' }}
+                value={this.state.name}
+              />
+              <TextField
+                id='outlined-basic-description'
+                label='Vendor Description'
+                onChange={(event) => this.handleNewDescriptionChange(event.target.value)}
+                style={{ paddingTop: '10px', paddingBottom: '20px', width: '200px', marginLeft: '50px' }}
+                value={this.state.description}
+              />
+            </form>
+            <div style={{ float: 'right' }}>
+              <Button
+                onClick={() => this.handleClose()}
+                style={{ height: '30px', width: '100px', backgroundColor: '#6c757d', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#6c757d', borderWidth: '0' }}
+              >
+                Cancel
+              </Button>{' '}
+              <Button
+                onClick={() => this.createVendor()}
                 style={{ height: '30px', width: '100px', backgroundColor: '#28a745', color: '#ffffff', borderRadius: '3px', fontFamily: 'inherit', borderColor: '#28a745', borderWidth: '0' }}
               >
                 Submit

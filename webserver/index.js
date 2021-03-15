@@ -8,8 +8,8 @@ const httpErrors = require('http-errors');
 const path = require('path');
 const pino = require('pino');
 const pinoHttp = require('pino-http');
-const { MONGODB } = require('./config');
-const { MongoClient } = require('mongodb');
+// const { MONGODB } = require('./config');
+// const { MongoClient } = require('mongodb');
 
 module.exports = async function main (options, cb) {
   // Set default options
@@ -29,34 +29,44 @@ module.exports = async function main (options, cb) {
   let serverStarted = false;
   let serverClosing = false;
 
+  const newTransaction = {
+    id: `${Math.random() * (1000 - 1 + 1) + 1}`,
+    user_id: `${Math.random() * (1000 - 1 + 1) + 1}`,
+    amount: Math.random() * (1000 - 1 + 1) + 1,
+    credit: true,
+    debit: false,
+    description: "Here is a description",
+    merchant_id: `${Math.random() * (1000 - 1 + 1) + 1}`
+  }
+
   const MONGO_URI = 'mongodb://localhost:27017/graphql';
+  mongoose.connect(MONGO_URI, { useNewUrlParser: true })
 
-  const client = new MongoClient(MONGODB)
-  try {
-    await client.connect();
-    await test(client);
-    console.log('connected');
-  } catch(err) {
-    console.log(err)
-  } finally {
-    await client.close();
-  }
 
-  async function test(client) {
-    const test = await client.db("Homework").collection("transactions").find();
-    console.log(test)
-  }
+  // const client = new MongoClient(MONGO_URI)
+  // try {
+  //   await client.connect();
+  //   await test(client);
+  //   console.log('connected');
+  // } catch(err) {
+  //   console.log(err)
+  // } finally {
+  //   await client.close();
+  // }
+
+  // async function test(client) {
+  //   const test = await client.db("Homework").collection("transactions").find();
+  //   console.log(test)
+  // }
 
 
   // mongoose.Promise = global.Promise;
-  // mongoose.connect(MONGODB, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true
+  // mongoose.connect(MONGO_URI, {
+  //   useNewUrlParser: true
   // }).then(() => {
-  //   const db = mongoose.connection
-  //   const test = db.collection('transactions').count().then((res) => { console.log(res)})
+  //   mongoose.connection.collection('transactions').insert(newTransaction).then((res) => { console.log(res)})
   //   console.log(test)
-  //   // return server.listen({ port: 8000 })
+  //   return server.listen({ port: 8000 })
   // })
 
   // Setup error handling
