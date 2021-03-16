@@ -9,7 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-
+  alias Homework.Transactions
+  alias Homework.Users.User
+  alias Homework.Users
+  alias Homework.Merchants.Merchant
+  alias Homework.Merchants
 
 #   Seeding the Merchants
 
@@ -33,9 +37,6 @@
 
 
 #   Seeding the Transactions
-  alias Homework.Transactions
-  alias Homework.Users.User
-  alias Homework.Merchants.Merchant
 
   users = Homework.Repo.all(User)
   user = Enum.random(users)
